@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer List</title>
+</head>
+<body>
+    <h1>Customer List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody id="customerTableBody">
+            <!-- Customer rows will be added here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+        const token = 'your_bearer_token'; // Set the bearer token obtained from login
+
+        fetch('https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=get_customer_list', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(customers => {
+            const tableBody = document.getElementById('customerTableBody');
+            customers.forEach(customer => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerText = customer.first_name;
+                row.insertCell(1).innerText = customer.last_name;
+                row.insertCell(2).innerText = customer.email;
+                // Add more cells as needed
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching customer list:', error);
+        });
+    </script>
+</body>
+</html>
